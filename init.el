@@ -27,12 +27,14 @@
 
 ;;;; Configuration
 
-(setq inhibit-startup-screen t)
+(setq inhibit-startup-screen t
+      ring-bell-function #'ignore)
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-
 (ef-themes-select 'ef-autumn)
+
 (require 'crafted-defaults-config)
 (require 'crafted-completion-config)
 (require 'crafted-evil-config)
@@ -47,3 +49,19 @@
 (electric-pair-mode t)
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.rust\\'" . rust-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+
+(global-set-key (kbd "C-c r") #'query-replace)
+
+(defun kill-other-buffers ()
+  "Kill all non-special buffers other than the current."
+  (interactive)
+  (let* ((normie-buffers (cl-remove-if-not #'buffer-file-name (buffer-list)))
+         (bufs (delete (current-buffer) normie-buffers)))
+    (when (yes-or-no-p
+           (format "Kill %d buffers? " (length bufs)))
+      (mapc #'kill-buffer bufs))))
