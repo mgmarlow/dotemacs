@@ -1,0 +1,15 @@
+* Emacs config
+
+Emacs config built on [[https://github.com/SystemCrafters/crafted-emacs][Crafted Emacs]].
+
+Clone crafted-emacs:
+
+#+begin_src shell
+  git clone https://github.com/SystemCrafters/crafted-emacs -b craftedv2beta ~/projects/crafted-emacs
+#+end_src
+
+Clone this repo:
+
+#+begin_src shell
+  git clone https://git.sr.ht/~mgmarlow/crafted-config ~/.emacs.d/
+#+end_src
