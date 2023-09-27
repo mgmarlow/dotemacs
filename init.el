@@ -16,12 +16,14 @@
 
 ;;;; Packages
 
+(require 'org-tempo)
 (require 'crafted-completion-packages)
 (require 'crafted-evil-packages)
 (require 'crafted-ui-packages)
 (require 'crafted-ide-packages)
 (add-to-list 'package-selected-packages 'ef-themes)
 (add-to-list 'package-selected-packages 'evil-escape)
+(add-to-list 'package-selected-packages 'magit)
 
 (package-install-selected-packages :noconfirm)
 
@@ -47,6 +49,7 @@
 				     (lambda () (not (evil-insert-state-p)))))
 (evil-escape-mode)
 (electric-pair-mode t)
+(add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
@@ -56,6 +59,7 @@
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 
 (global-set-key (kbd "C-c r") #'query-replace)
+(global-set-key (kbd "C-c g") #'magit-status)
 
 (defun kill-other-buffers ()
   "Kill all non-special buffers other than the current."
