@@ -37,6 +37,8 @@
 (scroll-bar-mode -1)
 (ef-themes-select 'ef-autumn)
 
+(setq crafted-ui-display-line-numbers t)
+
 (require 'crafted-defaults-config)
 (require 'crafted-completion-config)
 (require 'crafted-evil-config)
@@ -52,11 +54,6 @@
 (add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.rust\\'" . rust-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 
 (global-set-key (kbd "C-c r") #'query-replace)
 (global-set-key (kbd "C-c g") #'magit-status)
