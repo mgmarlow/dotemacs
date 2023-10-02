@@ -1,4 +1,11 @@
-;;;; https://github.com/SystemCrafters/crafted-emacs
+;;; init.el -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;; This Init File is built on Crafted Emacs v2+:
+;; https://github.com/SystemCrafters/crafted-emacs.
+
+;;; Code:
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (and custom-file
