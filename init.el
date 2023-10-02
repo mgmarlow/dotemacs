@@ -7,12 +7,15 @@
 
 (load "~/projects/crafted-emacs/modules/crafted-init-config")
 
+(defun osxp () (eq system-type 'darwin))
+
 (add-hook 'emacs-startup-hook
 	  (lambda ()
-	    (custom-set-faces
-	     `(default ((t :font "Hack 11")))
-	     `(fixed-pitch ((t :inherit (default))))
-	     `(default ((t :inherit (default)))))))
+            (let ((base (if (osxp) "Hack 14" "Hack 11")))
+	      (custom-set-faces
+	       `(default ((t :font ,base)))
+	       `(fixed-pitch ((t :inherit (default))))
+	       `(default ((t :inherit (default))))))))
 
 ;;;; Packages
 
@@ -21,6 +24,7 @@
 (require 'crafted-evil-packages)
 (require 'crafted-ui-packages)
 (require 'crafted-ide-packages)
+(require 'crafted-writing-packages)
 (add-to-list 'package-selected-packages 'ef-themes)
 (add-to-list 'package-selected-packages 'evil-escape)
 (add-to-list 'package-selected-packages 'magit)
@@ -28,6 +32,19 @@
 (package-install-selected-packages :noconfirm)
 
 ;;;; Configuration
+
+(customize-set-variable 'crafted-ui-display-line-numbers t)
+
+(require 'crafted-defaults-config)
+(require 'crafted-completion-config)
+(require 'crafted-evil-config)
+(require 'crafted-ui-config)
+(require 'crafted-ide-config)
+(require 'crafted-writing-config)
+(when (osxp) (require 'crafted-osx-config))
+(crafted-ide-configure-tree-sitter '(protobuf))
+
+;;;; Custom
 
 (setq inhibit-startup-screen t
       ring-bell-function #'ignore)
@@ -37,20 +54,14 @@
 (scroll-bar-mode -1)
 (ef-themes-select 'ef-autumn)
 
-(setq crafted-ui-display-line-numbers t)
-
-(require 'crafted-defaults-config)
-(require 'crafted-completion-config)
-(require 'crafted-evil-config)
-(require 'crafted-ui-config)
-(require 'crafted-ide-config)
-(crafted-ide-configure-tree-sitter '(protobuf))
-(setq evil-escape-key-sequence "jj"
-      evil-escape-delay 0.2
-      evil-escape-inhibit-functions (list
-				     (lambda () (not (evil-insert-state-p)))))
-(evil-escape-mode)
 (electric-pair-mode t)
+
+;; evil-escape
+(setq evil-escape-key-sequence (kbd "jj")
+      evil-escape-delay 0.2
+      evil-escape-inhibit-functions (list (lambda () (not (evil-insert-state-p)))))
+(evil-escape-mode)
+
 (add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
@@ -66,3 +77,6 @@
     (when (yes-or-no-p
            (format "Kill %d buffers? " (length bufs)))
       (mapc #'kill-buffer bufs))))
+
+(require 'server)
+(unless (server-running-p) (server-start))
