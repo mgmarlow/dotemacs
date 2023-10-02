@@ -55,6 +55,8 @@
 (scroll-bar-mode -1)
 (ef-themes-select 'ef-autumn)
 
+(customize-set-variable 'display-line-numbers-type 'relative)
+
 (electric-pair-mode t)
 
 ;; evil-escape
@@ -64,6 +66,7 @@
 (evil-escape-mode)
 
 (add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
+(add-hook 'lisp-data-mode-hook #'aggressive-indent-mode)
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
 
