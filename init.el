@@ -9,13 +9,14 @@
 
 (defun osxp () (eq system-type 'darwin))
 
-(add-hook 'emacs-startup-hook
-	  (lambda ()
-            (let ((base (if (osxp) "Hack 14" "Hack 11")))
-	      (custom-set-faces
-	       `(default ((t :font ,base)))
-	       `(fixed-pitch ((t :inherit (default))))
-	       `(default ((t :inherit (default))))))))
+(defun configure-fonts ()
+  (let ((base (if (osxp) "Hack 14" "Hack 11")))
+    (custom-set-faces
+     `(default ((t :font ,base)))
+     `(fixed-pitch ((t :inherit (default))))
+     `(default ((t :inherit (default)))))))
+
+(add-hook 'emacs-startup-hook #'configure-fonts)
 
 ;;;; Packages
 
