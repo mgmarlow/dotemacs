@@ -2,14 +2,18 @@
 
 Emacs config built on [[https://github.com/SystemCrafters/crafted-emacs][Crafted Emacs]].
 
-Clone crafted-emacs:
+Clone this repo (with submodules):
 
 #+begin_src shell
-  git clone https://github.com/SystemCrafters/crafted-emacs -b craftedv2beta ~/projects/crafted-emacs
+  git clone --recurse-submodules https://git.sr.ht/~mgmarlow/crafted-config ~/.emacs.d/
 #+end_src
 
-Clone this repo:
+** Extras
 
-#+begin_src shell
-  git clone https://git.sr.ht/~mgmarlow/crafted-config ~/.emacs.d/
+- [[https://github.com/source-foundry/Hack][Hack font]]
+
+** Update crafted-emacs
+
+#+begin_src emacs-lisp
+  git submodule update --init
 #+end_src

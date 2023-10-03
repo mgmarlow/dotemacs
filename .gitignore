@@ -3,3 +3,5 @@
 !init.el
 !early-init.el
 !README.org
+!.gitmodules
+!crafted-emacs/
