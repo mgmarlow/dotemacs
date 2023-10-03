@@ -1,6 +1,9 @@
 * Emacs config
 
-Emacs config built on [[https://github.com/SystemCrafters/crafted-emacs][Crafted Emacs]].
+Emacs config built on [[https://github.com/SystemCrafters/crafted-emacs][Crafted Emacs]]. This config is pointed at my own
+fork ([[https://github.com/mgmarlow/crafted-emacs][mgmarlow/crafted-emacs]]) for easier contribution.
+
+** Installation
 
 Clone this repo (with submodules):
 
@@ -12,7 +15,7 @@ Clone this repo (with submodules):
 
 - [[https://github.com/source-foundry/Hack][Hack font]]
 
-** Update crafted-emacs
+** Updating Crafted Emacs
 
 #+begin_src emacs-lisp
   git submodule update --init
