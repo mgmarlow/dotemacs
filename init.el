@@ -12,9 +12,7 @@
 	   (file-exists-p custom-file))
   (load custom-file nil :nomessage))
 
-;; (setq crafted-emacs-home (expand-file-name "crafted-emacs/" user-emacs-directory))
 (load (expand-file-name "modules/crafted-init-config" crafted-emacs-home))
-;; (load "~/projects/crafted-emacs/modules/crafted-init-config")
 
 (defun osxp () (eq system-type 'darwin))
 
