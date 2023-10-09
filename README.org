@@ -17,6 +17,8 @@ Clone this repo (with submodules):
 
 ** Updating Crafted Emacs
 
+Pull latest from [[https://github.com/mgmarlow/crafted-emacs][mgmarlow/crafted-emacs]]:
+
 #+begin_src emacs-lisp
-  git submodule update --init
+  git submodule update --remote --merge
 #+end_src
