@@ -50,7 +50,7 @@
 (require 'crafted-ide-config)
 (require 'crafted-writing-config)
 (when (osxp) (require 'crafted-osx-config))
-(crafted-ide-configure-tree-sitter '(protobuf))
+(crafted-ide-configure-tree-sitter)
 
 ;;;; Custom
 
