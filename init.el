@@ -32,16 +32,19 @@
 (require 'crafted-evil-packages)
 (require 'crafted-ui-packages)
 (require 'crafted-ide-packages)
+(require 'crafted-org-packages)
 (require 'crafted-writing-packages)
 (add-to-list 'package-selected-packages 'ef-themes)
 (add-to-list 'package-selected-packages 'evil-escape)
 (add-to-list 'package-selected-packages 'magit)
+(add-to-list 'package-selected-packages 'prettier-js)
 
 (package-install-selected-packages :noconfirm)
 
 ;;;; Configuration
 
 (customize-set-variable 'crafted-ui-display-line-numbers t)
+(customize-set-variable 'denote-directory "~/denote/")
 
 (require 'crafted-defaults-config)
 (require 'crafted-completion-config)
@@ -65,6 +68,7 @@
 (customize-set-variable 'display-line-numbers-type 'relative)
 
 (electric-pair-mode t)
+(require 'prettier-js) ;; prettier-js command is not autoloaded, only the major mode
 
 ;; evil-escape
 (setq evil-escape-key-sequence (kbd "jj")
@@ -76,9 +80,22 @@
 (add-hook 'lisp-data-mode-hook #'aggressive-indent-mode)
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.tf\\'" . hcl-mode))
 
 (global-set-key (kbd "C-c r") #'query-replace)
 (global-set-key (kbd "C-c g") #'magit-status)
+(global-set-key (kbd "C-c n j") #'journal-create-weekly)
+
+(defun journal-create-weekly ()
+  "Find or create a weekly journal entry."
+  (interactive)
+  (require 'denote)
+  (let* ((title (concat "week-" (format-time-string "%G-%U" (current-time))))
+         (pattern (concat ".*--" title))
+         (matches (denote-directory-files-matching-regexp pattern)))
+    (if matches
+        (find-file (car matches))
+      (denote title '("journal" "weekly") 'org nil nil 'weekly))))
 
 (defun kill-other-buffers ()
   "Kill all non-special buffers other than the current."
