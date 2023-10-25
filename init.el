@@ -38,6 +38,8 @@
 (add-to-list 'package-selected-packages 'evil-escape)
 (add-to-list 'package-selected-packages 'magit)
 (add-to-list 'package-selected-packages 'prettier-js)
+(add-to-list 'package-selected-packages 'aggressive-indent)
+(add-to-list 'package-selected-packages 'package-lint-flymake)
 
 (package-install-selected-packages :noconfirm)
 
@@ -78,9 +80,11 @@
 
 (add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
 (add-hook 'lisp-data-mode-hook #'aggressive-indent-mode)
+(add-hook 'emacs-lisp-mode-hook #'package-lint-flymake-setup)
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tf\\'" . hcl-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 (global-set-key (kbd "C-c r") #'query-replace)
 (global-set-key (kbd "C-c g") #'magit-status)
