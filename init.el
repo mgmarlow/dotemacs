@@ -70,7 +70,10 @@
 (customize-set-variable 'display-line-numbers-type 'relative)
 
 (electric-pair-mode t)
+
+;; javascript/typescript
 (require 'prettier-js) ;; prettier-js command is not autoloaded, only the major mode
+(customize-set-variable 'js-indent-level 2)
 
 ;; evil-escape
 (setq evil-escape-key-sequence (kbd "jj")
@@ -79,12 +82,14 @@
 (evil-escape-mode)
 
 (add-hook 'org-mode-hook (lambda () (electric-pair-local-mode -1)))
+(add-hook 'org-mode-hook #'auto-fill-mode)
 (add-hook 'lisp-data-mode-hook #'aggressive-indent-mode)
 (add-hook 'emacs-lisp-mode-hook #'package-lint-flymake-setup)
 
 (add-to-list 'auto-mode-alist '("\\.astro\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.tf\\'" . hcl-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs\\'" . js-ts-mode))
 
 (global-set-key (kbd "C-c r") #'query-replace)
 (global-set-key (kbd "C-c g") #'magit-status)
