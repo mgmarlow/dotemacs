@@ -40,6 +40,8 @@
 (add-to-list 'package-selected-packages 'prettier-js)
 (add-to-list 'package-selected-packages 'aggressive-indent)
 (add-to-list 'package-selected-packages 'package-lint-flymake)
+(add-to-list 'package-selected-packages 'exec-path-from-shell)
+(add-to-list 'package-selected-packages 'flymake-clippy)
 
 (package-install-selected-packages :noconfirm)
 
@@ -68,12 +70,30 @@
 (ef-themes-select 'ef-autumn)
 
 (customize-set-variable 'display-line-numbers-type 'relative)
-
 (electric-pair-mode t)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+;; Support running multiple Flymake backends with Eglot
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-stay-out-of 'flymake)
+
+  (defun manually-activate-flymake ()
+    (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
+    (flymake-mode 1))
+
+  (add-hook 'eglot-managed-mode-hook #'manually-activate-flymake nil t))
+
+;; Rust
+(require 'flymake-clippy)
+(add-hook 'rust-ts-mode-hook #'flymake-clippy-setup-backend)
 
 ;; javascript/typescript
 (require 'prettier-js) ;; prettier-js command is not autoloaded, only the major mode
 (customize-set-variable 'js-indent-level 2)
+(with-eval-after-load 'typescript-ts-mode
+  (define-key typescript-ts-mode-map (kbd "C-c C-f") #'prettier-js))
 
 ;; evil-escape
 (setq evil-escape-key-sequence (kbd "jj")
