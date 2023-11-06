@@ -40,10 +40,9 @@
 
 (crafted-init
  :modules (append
-           '(defaults completion evil ui ide org writing)
+           '(defaults completion ui ide org writing)
            (when (osxp) '(osx)))
  :packages '(ef-themes
-             evil-escape
              magit
              prettier-js
              aggressive-indent
@@ -89,12 +88,6 @@
 (customize-set-variable 'js-indent-level 2)
 (with-eval-after-load 'typescript-ts-mode
   (define-key typescript-ts-mode-map (kbd "C-c C-f") #'prettier-js))
-
-;; evil-escape
-(setq evil-escape-key-sequence (kbd "jj")
-      evil-escape-delay 0.2
-      evil-escape-inhibit-functions (list (lambda () (not (evil-insert-state-p)))))
-(evil-escape-mode)
 
 ;; Denote/org
 (require 'org-tempo)
