@@ -180,14 +180,6 @@
   :config
   (setq my-package-automatic-refresh-threshold (* 7 24)))
 
-;; This package is not in MELPA, so install it via package-vc-install:
-;; https://github.com/copilot-emacs/copilot.el
-(use-package copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . copilot-accept-completion)
-              ("TAB" . copilot-accept-completion)))
-
 (use-package my-copilot-tree-sitter)
 
 ;;; init.el ends here

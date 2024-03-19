@@ -20,6 +20,8 @@ Treesiter modes follow a *-ts-mode convention, so we need to map
   (dolist (recipe treesit-auto-recipe-list)
     (add-to-list 'copilot-major-mode-alist (my--copilot-tree-sitter-mode-map recipe))))
 
+;; This package is not in MELPA, so install it via package-vc-install:
+;; https://github.com/copilot-emacs/copilot.el
 (use-package copilot
   :after treesit-auto
   :hook (prog-mode . copilot-mode)
