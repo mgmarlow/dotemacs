@@ -172,6 +172,12 @@
         (list (lambda () (not (evil-insert-state-p)))))
   (evil-escape-mode))
 
+(use-package denote
+  :ensure t
+  :custom
+  (denote-known-keywords '("emacs" "journal" "weekly" "daily"))
+  (denote-directory (expand-file-name "~/denote")))
+
 ;;; Custom lisp modules:
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -181,5 +187,10 @@
   (setq my-package-automatic-refresh-threshold (* 7 24)))
 
 (use-package my-copilot-tree-sitter)
+
+(use-package my-denote-extensions
+  :after denote
+  :bind
+  ("C-c n j" . my-denote-weekly))
 
 ;;; init.el ends here
