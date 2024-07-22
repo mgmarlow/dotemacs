@@ -193,8 +193,6 @@
   :config
   (setq my-package-automatic-refresh-threshold (* 7 24)))
 
-(use-package my-copilot-tree-sitter)
-
 (use-package my-denote-extensions
   :after denote
   :bind
