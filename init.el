@@ -136,6 +136,13 @@
          (go-ts-mode . eglot-ensure))
   :bind (("C-c ." . eglot-code-action-quickfix)))
 
+(use-package rust-mode :ensure t)
+
+(use-package rust-ts-mode
+  :custom
+  ;; Bring in rust-mode for helpers like `rust-format-buffer'.
+  (require 'rust-mode))
+
 (use-package breadcrumb
   :ensure t
   :config
