@@ -185,6 +185,9 @@
   (denote-known-keywords '("emacs" "journal" "weekly" "daily"))
   (denote-directory (expand-file-name "~/denote")))
 
+(use-package zig-mode
+  :ensure t)
+
 ;;; Custom lisp modules:
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
