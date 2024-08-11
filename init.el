@@ -188,6 +188,16 @@
 (use-package zig-mode
   :ensure t)
 
+(use-package adoc-mode
+  :ensure t
+  :custom-face
+  (adoc-title-0-face ((t (:height 1.0 :weight bold))))
+  (adoc-title-1-face ((t (:height 1.0 :weight bold))))
+  (adoc-title-2-face ((t (:height 1.0 :weight bold))))
+  (adoc-title-3-face ((t (:height 1.0 :weight bold))))
+  (adoc-title-4-face ((t (:height 1.0 :weight bold))))
+  (adoc-title-5-face ((t (:height 1.0 :weight bold)))))
+
 ;;; Custom lisp modules:
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
