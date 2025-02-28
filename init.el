@@ -6,6 +6,6 @@
 
 ;;; Code:
 
-(org-babel-load-file "./configuration.org")
+(org-babel-load-file (expand-file-name "configuration.org" user-emacs-directory))
 
 ;;; init.el ends here
