@@ -111,6 +111,8 @@
   :ensure t
   :init
   (global-corfu-mode)
+  :hook
+  ((markdown-mode . (lambda () (global-corfu-mode -1))))
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0.25)
@@ -123,6 +125,14 @@
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 
+(use-package markdown-mode
+  :ensure t)
+
+;; Note: requires libenchant
+(use-package jinx
+  :ensure t
+  :hook ((markdown-mode . jinx-mode)))
+
 (use-package treesit-auto
   :ensure t
   :custom
@@ -131,84 +141,11 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-(use-package eglot
-  :hook ((rust-ts-mode . eglot-ensure)
-         (go-ts-mode . eglot-ensure))
-  :bind (("C-c ." . eglot-code-action-quickfix)))
-
-(use-package rust-mode :ensure t)
-
-(use-package rust-ts-mode
-  :custom
-  ;; Bring in rust-mode for helpers like `rust-format-buffer'.
-  (require 'rust-mode))
-
-(use-package breadcrumb
-  :ensure t
-  :config
-  (breadcrumb-mode))
-
-;; From "Extending Start Emacs"
-
-(use-package magit
-  :ensure t
-  :bind ("C-c g" . magit-status))
-
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode))
-
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package evil-escape
-  :ensure t
-  :after evil
-  :config
-  (setq evil-escape-key-sequence "jj")
-  (setq evil-escape-delay 0.2)
-  ;; Prevent "jj" from escaping any mode other than insert-mode.
-  (setq evil-escape-inhibit-functions
-        (list (lambda () (not (evil-insert-state-p)))))
-  (evil-escape-mode))
-
-(use-package denote
-  :ensure t
-  :custom
-  (denote-known-keywords '("emacs" "journal" "weekly" "daily"))
-  (denote-directory (expand-file-name "~/denote")))
-
 (use-package zig-mode
   :ensure t)
-
-(use-package adoc-mode
-  :ensure t
-  :custom-face
-  (adoc-title-0-face ((t (:height 1.0 :weight bold))))
-  (adoc-title-1-face ((t (:height 1.0 :weight bold))))
-  (adoc-title-2-face ((t (:height 1.0 :weight bold))))
-  (adoc-title-3-face ((t (:height 1.0 :weight bold))))
-  (adoc-title-4-face ((t (:height 1.0 :weight bold))))
-  (adoc-title-5-face ((t (:height 1.0 :weight bold)))))
 
 ;;; Custom lisp modules:
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
-(use-package my-package-refresh
-  :config
-  (setq my-package-automatic-refresh-threshold (* 7 24)))
-
-(use-package my-denote-extensions
-  :after denote
-  :bind
-  ("C-c n j" . my-denote-weekly))
 
 ;;; init.el ends here
