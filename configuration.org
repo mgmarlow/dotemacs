@@ -60,7 +60,7 @@ Sourced from [[https://git.sr.ht/~technomancy/better-defaults][~technomancy/bett
 
   (defun my--configure-fonts ()
     "Configure your default font family and size."
-    (let ((base (if (mac?) "Hack 14" "Hack 11")))
+    (let ((base (if (mac?) "Hack 15" "Hack 11")))
       (custom-set-faces
        `(default ((t :font ,base)))
        `(fixed-pitch ((t :inherit (default))))
@@ -152,6 +152,13 @@ Sourced from [[https://git.sr.ht/~technomancy/better-defaults][~technomancy/bett
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
+
+  (use-package eglot
+    :hook ((tsx-ts-mode . eglot-ensure)
+           (typescript-ts-mode . eglot-ensure)
+           (ruby-ts-mode . eglot-ensure))
+    :config
+    (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
 
   (use-package zig-mode
     :ensure t)
