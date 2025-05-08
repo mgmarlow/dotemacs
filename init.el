@@ -18,7 +18,8 @@
       backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))
       custom-file (expand-file-name "custom.el" user-emacs-directory)
       load-prefer-newer t
-      require-final-newline t)
+      require-final-newline t
+      auto-save-default nil)
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
