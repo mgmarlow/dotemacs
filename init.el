@@ -48,7 +48,7 @@
 (scroll-bar-mode -1)
 
 (defun my--configure-fonts ()
-  (let ((base "Hack 14"))
+  (let ((base "Hack 15"))
     (custom-set-faces
      `(default ((t :font ,base)))
      `(fixed-pitch ((t :inherit (default))))
@@ -136,6 +136,7 @@
 (add-to-list 'load-path "~/projects/helix-mode/")
 (use-package helix
   :config
+  (setq helix-jj-timeout 0.2)
   (helix-mode))
 
 ;;; init.el ends here
