@@ -24,6 +24,10 @@
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
+(use-package autorevert
+  :config
+  (global-auto-revert-mode))
+
 (use-package repeat
   :config
   (repeat-mode))
@@ -56,10 +60,10 @@
 
 (add-hook 'emacs-startup-hook #'my--configure-fonts)
 
-(use-package dracula-theme
+(use-package modus-themes
   :ensure t
   :config
-  (load-theme 'dracula t))
+  (modus-themes-select 'modus-vivendi))
 
 (use-package exec-path-from-shell
   :if (mac?)
@@ -116,9 +120,6 @@
   :ensure nil
   :hook (prog-mode . completion-preview-mode))
 
-(use-package zig-mode
-  :ensure t)
-
 (use-package fennel-mode
   :ensure t)
 
@@ -130,13 +131,51 @@
   :ensure t
   :hook ((markdown-mode . jinx-mode)))
 
+;; Note: requires ~/.authinfo
+;; https://github.com/karthink/gptel?tab=readme-ov-file#optional-securing-api-keys-with-authinfo
+;; e.g.
+;; machine api.anthropic.com login apikey password sk-secret-anthropic-api-key-goes-here
+(use-package gptel
+  :ensure t
+  :config
+  (setq
+   gptel-model "claude-3-opus-20240229"
+   gptel-backend (gptel-make-anthropic "Claude" :stream t)))
+
+(use-package multiple-cursors
+  :ensure t)
+
+(use-package format-all
+  :ensure t)
+
+;; TODO: mainline this into svelte-mode
+;; Patch svelte-mode to support typescript-ts-mode
+(with-eval-after-load 'svelte-mode
+  (defun svelte--load-typescript-submode ()
+    "Load `typescript-mode' and patch it."
+    (when (require 'typescript-ts-mode nil t)
+      (customize-set-variable 'typescript-ts-mode-indent-offset svelte-basic-offset)
+      (defconst svelte--typescript-submode
+        (svelte--construct-submode 'typescript-ts-mode
+                                   :name "TypeScript"
+                                   :end-tag "</script>"
+                                   :syntax-table typescript-ts-mode--syntax-table
+                                   :propertize #'typescript-ts--syntax-propertize
+                                   :indent-function #'js-indent-line
+                                   :keymap typescript-ts-mode-map)))))
+
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; https://github.com/mgmarlow/helix-mode
 (add-to-list 'load-path "~/projects/helix-mode/")
 (use-package helix
+  :after multiple-cursors
   :config
-  (setq helix-jj-timeout 0.2)
-  (helix-mode))
+  (helix-mode)
+  (helix-jj-setup 0.2)
+  (helix-multiple-cursors-setup)
+  (helix-define-typable-command
+   "format"
+   (lambda () (call-interactively #'format-all-buffer))))
 
 ;;; init.el ends here
