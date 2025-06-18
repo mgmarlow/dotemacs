@@ -120,6 +120,11 @@
   :ensure nil
   :hook (prog-mode . completion-preview-mode))
 
+;; Exposing the handy `smerge-vc-next-conflict command'.
+;; TODO: can this be autoloaded?
+(use-package smerge-mode
+  :ensure nil)
+
 (use-package fennel-mode
   :ensure t)
 
@@ -140,7 +145,7 @@
   :config
   (setq
    gptel-model "claude-3-opus-20240229"
-   gptel-backend (gptel-make-anthropic "Claude" :stream t)))
+   gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)))
 
 (use-package multiple-cursors
   :ensure t)
