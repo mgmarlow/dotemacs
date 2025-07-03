@@ -1,7 +1,7 @@
 *
 !init.el
-!configuration.org
 !README.md
 !lisp/
+!/lisp/**
 !.gitignore
 
