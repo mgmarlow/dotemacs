@@ -23,6 +23,7 @@
 (setq-default indent-tabs-mode nil)
 
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 (use-package autorevert
   :config
@@ -125,6 +126,11 @@
 (use-package smerge-mode
   :ensure nil)
 
+(use-package diff-hl
+  :ensure t
+  :config
+  (global-diff-hl-mode))
+
 (use-package fennel-mode
   :ensure t)
 
@@ -147,11 +153,34 @@
    gptel-model "claude-3-opus-20240229"
    gptel-backend (gptel-make-anthropic "Claude" :stream t :key gptel-api-key)))
 
+(use-package aidermacs
+  :ensure t
+  :bind (("C-x a" . aidermacs-transient-menu))
+  :config
+  (setenv "ANTHROPIC_API_KEY"
+          (funcall (plist-get (car (auth-source-search :machine "api.anthropic.com")) :secret)))
+  :custom
+  (aidermacs-default-chat-mode 'architect)
+  (aidermacs-default-model "sonnet"))
+
 (use-package multiple-cursors
   :ensure t)
 
 (use-package format-all
   :ensure t)
+
+;;; Custom lisp and patches
+
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; https://github.com/mgmarlow/helix-mode
+(add-to-list 'load-path "~/projects/helix-mode/")
+
+(defun copy-buffer-file-name ()
+  "Copy `buffer-file-name' to the clipboard."
+  (interactive)
+  (when buffer-file-name
+    (kill-new buffer-file-name)
+    (message "Copied to clipboard: %s" buffer-file-name)))
 
 ;; TODO: mainline this into svelte-mode
 ;; Patch svelte-mode to support typescript-ts-mode
@@ -169,10 +198,11 @@
                                    :indent-function #'js-indent-line
                                    :keymap typescript-ts-mode-map)))))
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(use-package rubyext
+  :bind (("C-x r r" . rubyext-rspec-current-file)
+         ("C-x r l" . rubyext-rspec-current-line)
+         ("C-x r u" . rubyext-rubocop-current-file)))
 
-;; https://github.com/mgmarlow/helix-mode
-(add-to-list 'load-path "~/projects/helix-mode/")
 (use-package helix
   :after multiple-cursors
   :config
