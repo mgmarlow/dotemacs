@@ -41,17 +41,15 @@ Argument COMMAND is a string, like \"bin/rspec\"."
   (rubyext--project-compile-command
    (concat "bin/rspec" " " path)))
 
-(defun rubyext-rspec-current-file ()
-  "Run rspec on the current file."
-  (interactive)
-  (rubyext--execute-rspec buffer-file-name))
-
 (defun rubyext--ends-with? (str suffix)
   "Check if STR ends with SUFFIX."
   (and (>= (length str) (length suffix))
        (string= (substring str (- (length str) (length suffix))) suffix)))
 
 (defun rubyext--recursive-search-predicate (filename)
+  "Narrow `directory-files-recursively' for quicker searches.
+
+Argument FILENAME is the currently visited filename from the directory search."
   (cond
    ((string-match-p "node_modules" filename) nil)
    ((string-match-p ".bundle" filename) nil)
@@ -66,14 +64,15 @@ Argument COMMAND is a string, like \"bin/rspec\"."
          (dir (project-root (project-current))))
     (directory-files-recursively dir regexp nil #'rubyext--recursive-search-predicate)))
 
-(defun rubyext-rspec-matching-file ()
+;;;###autoload
+(defun rubyext-rspec-matching-file (&optional args)
   "Run rspec on a file matching the current `buffer-file-name'.
 
 Errors if no files are found.  If there's more than one candidate,
 prompt via `completing-read'."
   (interactive)
   (if (rubyext--ends-with? buffer-file-name "_spec.rb")
-      (rubyext-rspec-current-file)
+      (rubyext--execute-rspec (apply #'concat buffer-file-name args))
     (let ((candidates (rubyext--locate-spec-file-candidates)))
       (cond
        ((= 0 (length candidates))
@@ -83,16 +82,14 @@ prompt via `completing-read'."
        (t
         (rubyext--execute-rspec (completing-read "Pick a spec: " candidates nil t)))))))
 
+;;;###autoload
 (defun rubyext-rspec-current-line ()
-  "Run rspec for the test specified at the current line."
+  "Like `rubyext-rspec-matching-file', but at the current line."
   (interactive)
-  (rubyext--project-compile-command
-   (concat "bin/rspec"
-           " "
-           (buffer-file-name)
-           ":"
-           (number-to-string (line-number-at-pos)))))
+  (rubyext--execute-rspec
+   (concat buffer-file-name ":" (number-to-string (line-number-at-pos)))))
 
+;;;###autoload
 (defun rubyext-rubocop-current-file ()
   "Run rubocop on the current file."
   (interactive)

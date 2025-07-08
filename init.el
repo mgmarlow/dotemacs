@@ -199,7 +199,7 @@
                                    :keymap typescript-ts-mode-map)))))
 
 (use-package rubyext
-  :bind (("C-x r r" . rubyext-rspec-current-file)
+  :bind (("C-x r r" . rubyext-rspec-matching-file)
          ("C-x r l" . rubyext-rspec-current-line)
          ("C-x r u" . rubyext-rubocop-current-file)))
 
