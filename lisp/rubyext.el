@@ -65,14 +65,14 @@ Argument FILENAME is the currently visited filename from the directory search."
     (directory-files-recursively dir regexp nil #'rubyext--recursive-search-predicate)))
 
 ;;;###autoload
-(defun rubyext-rspec-matching-file (&optional args)
+(defun rubyext-rspec-matching-file ()
   "Run rspec on a file matching the current `buffer-file-name'.
 
 Errors if no files are found.  If there's more than one candidate,
 prompt via `completing-read'."
   (interactive)
   (if (rubyext--ends-with? buffer-file-name "_spec.rb")
-      (rubyext--execute-rspec (apply #'concat buffer-file-name args))
+      (rubyext--execute-rspec buffer-file-name)
     (let ((candidates (rubyext--locate-spec-file-candidates)))
       (cond
        ((= 0 (length candidates))
