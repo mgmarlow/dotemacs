@@ -36,11 +36,52 @@ Argument COMMAND is a string, like \"bin/rspec\"."
              compilation-buffer-name-function)))
     (compile command)))
 
+(defun rubyext--execute-rspec (path)
+  "Run rspec on PATH."
+  (rubyext--project-compile-command
+   (concat "bin/rspec" " " path)))
+
 (defun rubyext-rspec-current-file ()
   "Run rspec on the current file."
   (interactive)
-  (rubyext--project-compile-command
-   (concat "bin/rspec" " " (buffer-file-name))))
+  (rubyext--execute-rspec buffer-file-name))
+
+(defun rubyext--ends-with? (str suffix)
+  "Check if STR ends with SUFFIX."
+  (and (>= (length str) (length suffix))
+       (string= (substring str (- (length str) (length suffix))) suffix)))
+
+(defun rubyext--recursive-search-predicate (filename)
+  (cond
+   ((string-match-p "node_modules" filename) nil)
+   ((string-match-p ".bundle" filename) nil)
+   ((string-match-p "tmp" filename) nil)
+   (t t)))
+
+(defun rubyext--locate-spec-file-candidates ()
+  "Locate the spec file corresponding to the current buffer-file-name."
+  (let* ((maybe-spec-file-name (concat (file-name-base buffer-file-name) "_spec.rb"))
+         (regexp (format "^%s$" (regexp-quote maybe-spec-file-name)))
+         ;; TODO This could be smarter by looking for a pack:
+         (dir (project-root (project-current))))
+    (directory-files-recursively dir regexp nil #'rubyext--recursive-search-predicate)))
+
+(defun rubyext-rspec-matching-file ()
+  "Run rspec on a file matching the current `buffer-file-name'.
+
+Errors if no files are found.  If there's more than one candidate,
+prompt via `completing-read'."
+  (interactive)
+  (if (rubyext--ends-with? buffer-file-name "_spec.rb")
+      (rubyext-rspec-current-file)
+    (let ((candidates (rubyext--locate-spec-file-candidates)))
+      (cond
+       ((= 0 (length candidates))
+        (error "No matching rspec files found."))
+       ((= 1 (length candidates))
+        (rubyext--execute-rspec (car candidates)))
+       (t
+        (rubyext--execute-rspec (completing-read "Pick a spec: " candidates nil t)))))))
 
 (defun rubyext-rspec-current-line ()
   "Run rspec for the test specified at the current line."
